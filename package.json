@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "test-node": "node builder-test-node.js"
+  },
+  "devDependencies": {
+    "@now/build-utils": "^0.4.31",
+    "@now/node": "^0.4.27"
+  }
+}
