@@ -6,16 +6,23 @@ const workingDir = path.join(process.cwd(), 'nodejs');
 const nowJson = require('./nodejs/now.json');
 
 module.exports = async () => {
-  for (build of nowJson.builds) {
-    const output = await builder.build({
-      files: glob(build.src),
-      workPath: workingDir,
-      config: build.config
-    });
-    console.log(output);
+  const files = await glob('**', workingDir);
+
+  for (const build of nowJson.builds) {
+    const entries = Object.values(await glob(build.src, workingDir));
+
+    for (const entrypoint of entries) {
+      const output = await builder.build({
+        files,
+        entrypoint,
+        workPath: workingDir,
+        config: build.config
+      });
+      console.log(output);
+    }
   }
 }
 
 if (require.main === module) {
-  module.exports();
+  module.exports().catch(console.error);
 }
